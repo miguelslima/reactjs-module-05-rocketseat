@@ -15,6 +15,12 @@ const Container = styled.div`
     align-items: center;
   }
 
+  p {
+    margin-top: 25px;
+    color: #999;
+    margin-left: 10px;
+  }
+
   svg {
     margin: 6px;
   }

@@ -1,27 +1,7 @@
 import styled, { keyframes, css } from 'styled-components';
 
-export const Container = styled.div`
-  max-width: 700px;
-  background: #fff;
-  border-radius: 4px;
-  box-shadow: 0, 0, 20px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  margin: 80px auto;
-
-  h1 {
-    font-size: 30px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  svg {
-    margin: 6px;
-  }
-`;
-
 export const Form = styled.form`
-  margin-top: 30px;
+  margin-top: 10px;
   display: flex;
   flex-direction: row;
 
@@ -116,11 +96,8 @@ export const NoShowError = styled.div`
 `;
 
 export const ShowError = styled.div`
-  margin: 2px 0 0 2px;
-  display: flex;
-  align-items: center;
-
   small {
+    margin: 10px;
     display: flex;
     flex: 1;
     color: #ff6b6b;

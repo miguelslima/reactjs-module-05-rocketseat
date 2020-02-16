@@ -91,11 +91,11 @@ export default class Main extends Component {
           <FaGithubAlt />
           Repositórios
         </h1>
-
-        <Form onSubmit={this.handleSubmit} error={error ? 1 : 0}>
+        <p> Digite um repositório válido (ex.: Username/RepositoryName) </p>
+        <Form onSubmit={this.handleSubmit} error={error}>
           <input
             type="text"
-            placeholder="Adicionar repositorio"
+            placeholder={ErrorMess}
             value={newRepo}
             onChange={this.handleInputChange}
           />
@@ -108,18 +108,14 @@ export default class Main extends Component {
             )}
           </SubmitButton>
         </Form>
-
-        <NoShowError error={error}>
-          <small>
-            Ex: <i>UserName/RepositoryName</i>
-          </small>
-        </NoShowError>
-
         {ErrorMess && (
           <ShowError>
             <small>{ErrorMess}</small>
           </ShowError>
         )}
+        <NoShowError error={error}>
+          <small />
+        </NoShowError>
 
         <List>
           {repositories.map(repositoriy => (
