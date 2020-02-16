@@ -6,7 +6,7 @@ import api from '../../services/api';
 
 import Container from '../../components/Container';
 
-import { Form, SubmitButton, List } from './styles';
+import { Form, SubmitButton, List, ShowError, NoShowError } from './styles';
 
 export default class Main extends Component {
   // eslint-disable-next-line react/state-in-constructor
@@ -14,6 +14,8 @@ export default class Main extends Component {
     newRepo: '',
     repositories: [],
     loading: false,
+    error: null,
+    ErrorMess: '',
   };
 
   // Carregar os dados do localStorage
@@ -41,25 +43,47 @@ export default class Main extends Component {
   handleSubmit = async e => {
     e.preventDefault();
 
-    this.setState({ loading: true });
+    this.setState({ loading: true, error: false });
 
-    const { newRepo, repositories } = this.state;
+    try {
+      const { newRepo, repositories } = this.state;
 
-    const response = await api.get(`/repos/${newRepo}`);
+      if (newRepo === '') {
+        throw new Error('Repository cannot be empty');
+      }
 
-    const data = {
-      name: response.data.full_name,
-    };
+      const response = await api.get(`/repos/${newRepo}`);
 
-    this.setState({
-      repositories: [...repositories, data],
-      newRepo: '',
-      loading: false,
-    });
+      const alreadyRepo = repositories.find(r => r.name === newRepo);
+
+      if (alreadyRepo) {
+        throw new Error('Repository already exists');
+      }
+
+      const data = {
+        name: response.data.full_name,
+      };
+
+      this.setState({
+        repositories: [...repositories, data],
+        newRepo: '',
+        ErrorMess: '',
+      });
+    } catch (Error) {
+      this.setState({
+        error: true,
+        ErrorMess:
+          Error.message === 'Request failed with status code 404'
+            ? 'Repository not found!'
+            : Error.message,
+      });
+    } finally {
+      this.setState({ loading: false });
+    }
   };
 
   render() {
-    const { newRepo, repositories, loading } = this.state;
+    const { newRepo, repositories, loading, error, ErrorMess } = this.state;
 
     return (
       <Container>
@@ -68,7 +92,7 @@ export default class Main extends Component {
           Repositórios
         </h1>
 
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} error={error ? 1 : 0}>
           <input
             type="text"
             placeholder="Adicionar repositorio"
@@ -84,6 +108,18 @@ export default class Main extends Component {
             )}
           </SubmitButton>
         </Form>
+
+        <NoShowError error={error}>
+          <small>
+            Ex: <i>UserName/RepositoryName</i>
+          </small>
+        </NoShowError>
+
+        {ErrorMess && (
+          <ShowError>
+            <small>{ErrorMess}</small>
+          </ShowError>
+        )}
 
         <List>
           {repositories.map(repositoriy => (

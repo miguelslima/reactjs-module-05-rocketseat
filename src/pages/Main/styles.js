@@ -27,10 +27,18 @@ export const Form = styled.form`
 
   input {
     flex: 1;
-    border: 1px solid #eee;
+    border: 1px solid ${props => (props.error ? '#ff6b6b' : '#eee')};
+    background-color: ${props => (props.error ? '#f8d7da' : '#fff')};
     padding: 10px 15px;
     border-radius: 4px;
     font-size: 16px;
+
+    transition: border 0.25s ease-out;
+
+    input::placeholder {
+      color: #999;
+      font-style: italic;
+    }
   }
 `;
 
@@ -91,5 +99,31 @@ export const List = styled.ul`
   a {
     color: #7159c1;
     text-decoration: none;
+  }
+`;
+
+export const NoShowError = styled.div`
+  margin: 2px 0 0 2px;
+  display: flex;
+  align-items: center;
+
+  small {
+    display: flex;
+    flex: 1;
+    color: #333;
+    margin: 2px 0 0 2px;
+  }
+`;
+
+export const ShowError = styled.div`
+  margin: 2px 0 0 2px;
+  display: flex;
+  align-items: center;
+
+  small {
+    display: flex;
+    flex: 1;
+    color: #ff6b6b;
+    padding-left: 3px;
   }
 `;
