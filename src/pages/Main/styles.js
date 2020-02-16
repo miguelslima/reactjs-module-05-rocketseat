@@ -72,8 +72,8 @@ export const List = styled.ul`
     align-items: center;
   }
 
-  & + li {
-    border-top: 1px solid #aaa;
+  li + li {
+    border-top: 1px solid #eee;
   }
 
   a {

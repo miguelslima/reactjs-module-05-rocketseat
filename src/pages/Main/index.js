@@ -70,13 +70,20 @@ export default class Main extends Component {
         ErrorMess: '',
       });
     } catch (Error) {
-      this.setState({
-        error: true,
-        ErrorMess:
-          Error.message === 'Request failed with status code 404'
-            ? 'Repository not found!'
-            : Error.message,
-      });
+      this.setState(
+        {
+          error: true,
+          ErrorMess:
+            Error.message === 'Request failed with status code 404'
+              ? 'Repository not found!'
+              : Error.message,
+        },
+        () => {
+          setTimeout(() => {
+            this.setState({ ErrorMess: '' });
+          }, 3000);
+        }
+      );
     } finally {
       this.setState({ loading: false });
     }
